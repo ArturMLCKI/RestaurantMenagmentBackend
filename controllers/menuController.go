@@ -78,6 +78,10 @@ func CreateMenu() gin.HandlerFunc {
 	}
 }
 
+func inTimeSpan(start, end, check time.Time) bool {
+	return start.After(time.Now()) && end.After(start)
+}
+
 func UpdateMenu() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -113,7 +117,7 @@ func UpdateMenu() gin.HandlerFunc {
 
 			menu.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
 
-			updatedObj = append(updatedObj, bson.E{"updated_at", menu.Update_at})
+			updateObj = append(updatedObj, bson.E{"updated_at", menu.Updated_at})
 
 			upsert := true
 
